@@ -1,0 +1,9 @@
+service:
+  a: true
+  b: true
+  c: true
+
+bean:
+  a: true
+  b: true
+  c: true
