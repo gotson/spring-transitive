@@ -18,7 +18,8 @@ class MyServicesTest {
 
     @Test
     fun `all services loaded when serviceA is enabled`() {
-        assertThat(ctx.beanDefinitionNames).containsAll(listOf("serviceA", "serviceB", "serviceC"))
+        assertThat(ctx.beanDefinitionNames.asList())
+                .containsAll(listOf("serviceA", "serviceB", "serviceC"))
     }
 }
 
@@ -31,6 +32,22 @@ class MyServicesTest2 {
 
     @Test
     fun `no services loaded when serviceA is not enabled`() {
-        assertThat(ctx.beanDefinitionNames).doesNotContainAnyElementsOf(listOf("serviceA", "serviceB", "serviceC"))
+        assertThat(ctx.beanDefinitionNames.asList())
+                .doesNotContainAnyElementsOf(listOf("serviceA", "serviceB", "serviceC"))
+    }
+}
+
+@RunWith(SpringRunner::class)
+@SpringBootTest(properties = ["service.b=false"])
+class MyServicesTest3 {
+
+    @Autowired
+    private lateinit var ctx: ApplicationContext
+
+    @Test
+    fun `only serviceA is loaded when serviceB is not enabled`() {
+        assertThat(ctx.beanDefinitionNames.asList())
+                .contains("serviceA")
+                .doesNotContainAnyElementsOf(listOf("serviceB", "serviceC"))
     }
 }

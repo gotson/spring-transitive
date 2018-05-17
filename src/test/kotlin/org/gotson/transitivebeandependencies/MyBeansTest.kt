@@ -18,7 +18,8 @@ class MyBeansTest {
 
     @Test
     fun `all beans loaded when beanA is enabled`() {
-        assertThat(ctx.beanDefinitionNames).containsAll(listOf("beanA", "beanB", "beanC"))
+        assertThat(ctx.beanDefinitionNames.asList()
+        ).containsAll(listOf("beanA", "beanB", "beanC"))
     }
 }
 
@@ -31,6 +32,22 @@ class MyBeansTest2 {
 
     @Test
     fun `no beans loaded when beanA is not enabled`() {
-        assertThat(ctx.beanDefinitionNames).doesNotContainAnyElementsOf(listOf("beanA", "beanB", "beanC"))
+        assertThat(ctx.beanDefinitionNames.asList())
+                .doesNotContainAnyElementsOf(listOf("beanA", "beanB", "beanC"))
+    }
+}
+
+@RunWith(SpringRunner::class)
+@SpringBootTest(properties = ["bean.b=false"])
+class MyBeansTest3 {
+
+    @Autowired
+    private lateinit var ctx: ApplicationContext
+
+    @Test
+    fun `only beanA is loaded when beanB is not enabled`() {
+        assertThat(ctx.beanDefinitionNames.asList())
+                .contains("beanA")
+                .doesNotContainAnyElementsOf(listOf("beanB", "beanC"))
     }
 }

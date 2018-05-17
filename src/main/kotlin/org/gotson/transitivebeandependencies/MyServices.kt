@@ -3,14 +3,14 @@ package org.gotson.transitivebeandependencies
 import mu.KotlinLogging
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 
 private val logger = KotlinLogging.logger {}
 
 class MyServices
 
 @ConditionalOnProperty("service.a")
-@Service
+@Component
 class ServiceA {
     init {
         logger.info { "A SERVICE" }
@@ -19,7 +19,7 @@ class ServiceA {
 
 @ConditionalOnBean(ServiceA::class)
 @ConditionalOnProperty("service.b")
-@Service
+@Component
 class ServiceB(
         private val serviceA: ServiceA
 ) {
@@ -30,7 +30,7 @@ class ServiceB(
 
 @ConditionalOnBean(ServiceB::class)
 @ConditionalOnProperty("service.c")
-@Service
+@Component
 class ServiceC(
         private val serviceB: ServiceB
 ) {
